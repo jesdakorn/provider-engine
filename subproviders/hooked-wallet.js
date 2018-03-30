@@ -72,6 +72,7 @@ function HookedWalletSubprovider(opts){
   if (opts.recoverPersonalSignature) self.recoverPersonalSignature = opts.recoverPersonalSignature
   // publish to network
   if (opts.publishTransaction) self.publishTransaction = opts.publishTransaction
+  this.opts = opts
 }
 
 HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
@@ -81,8 +82,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'eth_coinbase':
       // check for full method override
-      if (opts.eth_coinbase) {
-        return opts.eth_coinbase(payload, next, end)
+      if (this.opts.eth_coinbase) {
+        return this.opts.eth_coinbase(payload, next, end)
       }
       // process normally
       self.getAccounts(function(err, accounts){
@@ -94,8 +95,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'eth_accounts':
       // check for full method override
-      if (opts.eth_accounts) {
-        return opts.eth_accounts(payload, next, end)
+      if (this.opts.eth_accounts) {
+        return this.opts.eth_accounts(payload, next, end)
       }
       // process normally
       self.getAccounts(function(err, accounts){
@@ -106,8 +107,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'eth_sendTransaction':
       // check for full method override
-      if (opts.eth_sendTransaction) {
-        return opts.eth_sendTransaction(payload, next, end)
+      if (this.opts.eth_sendTransaction) {
+        return this.opts.eth_sendTransaction(payload, next, end)
       }
       // process normally
       var txParams = payload.params[0]
@@ -119,8 +120,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'eth_signTransaction':
       // check for full method override
-      if (opts.eth_signTransaction) {
-        return opts.eth_signTransaction(payload, next, end)
+      if (this.opts.eth_signTransaction) {
+        return this.opts.eth_signTransaction(payload, next, end)
       }
       // process normally
       var txParams = payload.params[0]
@@ -132,8 +133,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'eth_sign':
       // check for full method override
-      if (opts.eth_sign) {
-        return opts.eth_sign(payload, next, end)
+      if (this.opts.eth_sign) {
+        return this.opts.eth_sign(payload, next, end)
       }
       // process normally
       var address = payload.params[0]
@@ -153,8 +154,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'personal_sign':
       // check for full method override
-      if (opts.personal_sign) {
-        return opts.personal_sign(payload, next, end)
+      if (this.opts.personal_sign) {
+        return this.opts.personal_sign(payload, next, end)
       }
       // process normally
       const first = payload.params[0]
@@ -198,8 +199,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'personal_ecRecover':
       // check for full method override
-      if (opts.personal_ecRecover) {
-        return opts.personal_ecRecover(payload, next, end)
+      if (this.opts.personal_ecRecover) {
+        return this.opts.personal_ecRecover(payload, next, end)
       }
       // process normally
       var message = payload.params[0]
@@ -216,8 +217,8 @@ HookedWalletSubprovider.prototype.handleRequest = function(payload, next, end){
 
     case 'eth_signTypedData':
       // check for full method override
-      if (opts.eth_signTypedData) {
-        return opts.eth_signTypedData(payload, next, end)
+      if (this.opts.eth_signTypedData) {
+        return this.opts.eth_signTypedData(payload, next, end)
       }
       // process normally
       message = payload.params[0]
